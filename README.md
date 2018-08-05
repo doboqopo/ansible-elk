@@ -86,7 +86,7 @@ ansible-playbook -i hosts playbook/install-elk-client.yml --extra-vars 'elk_serv
    - Once this completes return to your ELK and you'll see log results come in from ELK/EFK clients via filebeat
 ![ELK](/image/elk-index-5.x-4.png?raw=true "watch the magic")
 
-## Datasource example:
+## Simple example:
 
 ```yaml
 # install-elk-server.yml
