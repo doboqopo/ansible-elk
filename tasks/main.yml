@@ -1,0 +1,78 @@
+---
+- name: Install ES
+  include: install-elasticsearch.yml
+  tags:
+    - logserver
+
+- name: Install Fluentd
+  include: install-fluentd.yml
+  when: logging_backend == 'fluentd'
+  tags:
+    - logserver
+
+- name: Install Logstash
+  include: install-logstash.yml
+  when: logging_backend is none or logging_backend == 'logstash'
+  tags:
+    - logserver
+
+- name: Install Nginx
+  include: install-nginx.yml
+  tags:
+    - logserver
+
+- name: Install Curator
+  include: install-curator.yml
+  when: install_curator_tool
+  tags:
+    - logserver
+
+- name: Install Kibana
+  include: install-kibana.yml
+  tags:
+    - logserver
+
+- name: Install XPack
+  include: install-xpack.yml
+  when: ((install_elasticsearch_xpack) or (install_kibana_xpack) or (install_logstash_xpack))
+  tags:
+    - logserver
+
+- name: Install Firewall
+  include: install-firewall.yml
+  when: manage_firewall
+  tags:
+    - logserver
+
+- name: Install Instructions
+  include: install-instructions.yml
+  tags:
+    - logserver
+
+- name: Install ELK Client
+  include: install-client.yml
+  tags:
+    - logclient
+
+- name: Install Filebeat
+  include: install-filebeat.yml
+  tags:
+    - logclient
+
+- name: Install Packetbeat
+  include: install-packetbeat.yml
+  when: install_packetbeat
+  tags:
+    - logclient
+
+- name: Install Metricbeat
+  include: install-metricbeat.yml
+  when: install_metricbeat
+  tags:
+    - logclient
+
+- name: Install Heartbeat
+  include: install-heartbeat.yml
+  when: install_heartbeat
+  tags:
+    - logclient
