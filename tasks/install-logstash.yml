@@ -23,7 +23,7 @@
 #  command: /usr/share/logstash/bin/logstash-plugin update logstash-input-udp
 #  become: true
 
-# logstash server write logs to /etc/logstash/queue failed
+# logstash server write logs to /var/lib/logstash/queue failed
 - name: chown /var/lib/logstash/ to user "logstash" and group "logstash"
   file:
    path: /var/lib/logstash/
