@@ -24,8 +24,12 @@
 #  become: true
 
 # logstash server write logs to /etc/logstash/queue failed
-- name: chown /etc/logstash to user "logstash" and group "logstash"
-  command: chown -R logstash:logstash /etc/logstash/
+- name: chown /var/lib/logstash/ to user "logstash" and group "logstash"
+  file:
+   path: /var/lib/logstash/
+   recurse: yes
+   group: logstash
+   owner: logstash
   become: true
 
 - name: Copy logstash filter configuration
