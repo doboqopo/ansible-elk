@@ -24,12 +24,30 @@
 #  become: true
 
 # logstash server write logs to /var/lib/logstash/queue failed
-- name: chown /var/lib/logstash/ to user "logstash" and group "logstash"
-  file:
-   path: /var/lib/logstash/
-   recurse: yes
-   group: logstash
-   owner: logstash
+#- name: chown /var/lib/logstash to user "logstash" and group "logstash"
+#  file:
+#   path: /var/lib/logstash
+#   recurse: yes
+#   group: logstash
+#   owner: logstash
+#  become: true
+
+# logstash server no load /etc/logstash/conf.d confige files
+#- name: chown /etc/logstash to user "logstash" and group "logstash"
+#  file:
+#   path: /etc/logstash
+#   recurse: yes
+#   group: logstash
+#   owner: logstash
+#  become: true
+
+- name: Copy logstash setting
+  template:
+    src=logstash.yml.j2
+    dest=/etc/logstash/logstash.yml
+    owner=logstash
+    group=logstash
+    mode=0644
   become: true
 
 - name: Copy logstash filter configuration
@@ -40,6 +58,18 @@
     group=logstash
     mode=0644
   become: true
+
+- name: Copy logstash startup options
+  template:
+    src=logstash-startup.options.j2
+    dest=/etc/logstash/startup.options
+    owner=logstash
+    group=logstash
+    mode=0644
+  become: true
+
+- name: Install logstash system options
+  shell: /usr/share/logstash/bin/system-install
 
 - name: Load OpenSSL CA Extended Configuration
   template:

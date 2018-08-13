@@ -16,6 +16,11 @@
   tags:
     - logserver
 
+- name: Install Mssqlbeat
+  include: install-mssqlbeat.yml
+  tags:
+    - logserver
+
 - name: Install Nginx
   include: install-nginx.yml
   tags:

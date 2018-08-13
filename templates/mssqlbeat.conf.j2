@@ -1,0 +1,26 @@
+input {
+  jdbc {
+    jdbc_driver_library => "/usr/share/logstash/lib/driver/sqljdbc_6.0/chs/jre8/sqljdbc42.jar"
+    jdbc_driver_class => "com.microsoft.sqlserver.jdbc.SQLServerDriver"
+    jdbc_connection_string => "jdbc:sqlserver://121.199.62.3:52577;databaseName=db_jihuo_temp;"
+    jdbc_default_timezone => "Asia/Shanghai"
+    jdbc_user => "sa"
+    jdbc_password => "JHB!@#$%^~~00"
+    statement => "SELECT * FROM JH_TC_BOX"
+    schedule => "* * * * *"
+    use_column_value => true
+    tracking_column => "id"
+    last_run_metadata_path => "/etc/logstash/.logstash_mssqljhtcbox_last_run"
+    type => "mssqljhtcbox"
+  }
+}
+
+output {
+  if [type] == "mssqljhtcbox" {
+    elasticsearch {
+      hosts => ["localhost:9200"]
+      index => "gihoo-tcbox"
+      document_id => "%{id}"
+    }
+  }
+}

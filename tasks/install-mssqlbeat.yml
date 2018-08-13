@@ -1,0 +1,41 @@
+---
+#
+# install/run mssqlbeat elk client
+#
+- name: Create mssql connector download home
+  file:
+    path=/usr/share/logstash/lib/driver
+    recurse=yes 
+    owner=logstash
+    group=logstash
+    mode=0644
+    state=directory
+  become: true
+  when: (logging_backend != 'fluentd')
+  tags:
+    - mssql
+    - logserver
+
+- name: Unarchive mssql connector to logstash library
+  unarchive:
+    src=https://download.microsoft.com/download/A/F/B/AFB381FF-7037-46CE-AF9B-6B1875EA81D7/sqljdbc_6.0.8112.200_chs.tar.gz
+    dest=/usr/share/logstash/lib/driver
+    remote_src=yes
+    creates=yes
+    owner=logstash
+    group=logstash
+    mode=0644
+  become: true
+  when: (logging_backend != 'fluentd')
+  tags:
+    - mssql
+    - logserver
+
+- name: Copy logstash filter configuration
+  template:
+    src=mssqlbeat.conf.j2
+    dest=/etc/logstash/conf.d/mssqlbeat.conf
+    owner=logstash
+    group=logstash
+    mode=0644
+  become: true
